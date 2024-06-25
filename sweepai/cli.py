@@ -22,6 +22,7 @@ from sweepai.utils.event_logger import posthog
 from sweepai.utils.github_utils import get_github_client
 from sweepai.utils.str_utils import get_hash
 from sweepai.web.events import Account, Installation, IssueRequest
+from sweepai.watch import main
 
 app = typer.Typer(
     name="sweepai", context_settings={"help_option_names": ["-h", "--help"]}
@@ -228,18 +229,7 @@ def watch(
         else:
             return handle_request(payload, get_event_type(event))
 
-    def main():
-        cprint(
-            f"\n[bold black on white]  Starting server, listening to events from {repo_name}...  [/bold black on white]\n",
-        )
-        cprint(
-            f"To create a PR, please create an issue at https://github.com/{repo_name}/issues with a title prefixed with 'Sweep:' or label an existing issue with 'sweep'. The events will be logged here, but there may be a brief delay.\n"
-        )
-        for event in stream_events(repo):
-            handle_event(event)
-
-    if __name__ == "__main__":
-        main()
+    main(repo, repo_name)
 
 
 @app.command()
