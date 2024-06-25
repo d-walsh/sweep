@@ -18,9 +18,6 @@ from sweepai.utils.event_logger import logger
 DEBUG = os.environ.get("DEBUG", False)
 RECORD_EVENTS = os.environ.get("RECORD_EVENTS", False)
 MAX_EVENTS = 30
-g = Github(os.environ["GITHUB_PAT"])
-repo_name = os.environ["REPO"]
-repo = g.get_repo(repo_name)
 if DEBUG:
     logger.debug("Debug mode enabled")
 
@@ -101,7 +98,12 @@ def handle_event(event: Event | IssueEvent, do_async: bool = True):
         return handle_request(payload, get_event_type(event))
 
 
-def main():
+def main(repo: Repository, repo_name: str):
+    if not isinstance(repo, Repository):
+        raise ValueError("Invalid repository object passed to main")
+    if not isinstance(repo_name, str):
+        raise ValueError("Invalid repository name passed to main")
+
     print(
         f"\n[bold black on white]  Starting server, listening to events from {repo_name}...  [/bold black on white]\n",
     )
@@ -113,4 +115,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    g = Github(os.environ["GITHUB_PAT"]) 
+    repo_name = os.environ["REPO"]
+    repo = g.get_repo(repo_name)
+    main(repo, repo_name)
