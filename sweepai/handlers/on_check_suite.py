@@ -134,7 +134,7 @@ def get_failing_docker_logs(cloned_repo: ClonedRepo):
             try:
                 with change_dir(cloned_repo.repo_dir):
                     # Build the Docker image
-                    build_command = f"docker build -t {image_name} -f {dockerfile_path} --build-arg CODE_PATH=. ."
+                    build_command = f"docker build -t {image_name} -f {dockerfile_path} --build-arg CODE_PATH={cloned_repo.repo_dir} {cloned_repo.repo_dir}"
                     # Disable BuildKit to avoid issues with Dockerfile syntax
                     disable_buildkit_prefix = "DOCKER_BUILDKIT=0"
                     build_command = f"{disable_buildkit_prefix} {build_command}"
