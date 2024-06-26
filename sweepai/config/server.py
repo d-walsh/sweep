@@ -205,6 +205,11 @@ WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", None)
 
 SENTRY_URL = os.environ.get("SENTRY_URL", None)
 
+DB_ENGINE = os.environ.get("DB_ENGINE", "hnsw")
+HNSW_MAX_ELEMENTS = int(os.environ.get("HNSW_MAX_ELEMENTS", 100000))
+HNSW_EF_CONSTRUCTION = int(os.environ.get("HNSW_EF_CONSTRUCTION", 200))
+HNSW_M = int(os.environ.get("HNSW_M", 16))
+
 CACHE_DIRECTORY = os.environ.get("CACHE_DIRECTORY", "/mnt/caches")
 
 assert OPENAI_API_KEY, "OPENAI_API_KEY is required."
